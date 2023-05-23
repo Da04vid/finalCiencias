@@ -46,6 +46,7 @@ void registrar(BD bd){
             bd.insertarCiudad();
             break;
         case 2:
+            bd.insertarCandidato();
             break;
         case 3:
             bd.insertarPartido();
