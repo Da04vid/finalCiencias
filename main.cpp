@@ -3,6 +3,7 @@
 #include "BD.h"
 using namespace std;
 
+
 void registrar(BD bd);
 
 int main(){
