@@ -70,3 +70,5 @@ void registrar(BD bd){
         }
     }while(respuesta!=4);
 }
+
+
