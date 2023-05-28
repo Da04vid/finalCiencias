@@ -33,9 +33,9 @@ class lista{
 		T buscar (int id);
 		bool modificar(int  id,string tabla,string campo);
     private:
-        void modificar_ciudad(string campo);
-        void modificar_candidato(string campo);
-        void modificar_partido(string campo);	
+        void modificar_ciudad(string campo, T Dato);
+        void modificar_candidato(string campo, T Dato);
+        void modificar_partido(string campo, T Dato);
 };
 template <class T>
 bool lista<T>::lista_vacia(){
@@ -100,20 +100,32 @@ bool lista<T>::modificar(int id,string tabla,string campo){
 		return false;
 	}
     if (tabla == "Ciuddad"){
-        modificar_ciudad(campo);
-    }else if(tabla == "Candidato"){
-        modificar_candidato(campo);
-    }else if(tabla == "Partido"){
-        modificar_partido(campo);
+        modificar_ciudad(campo,p);
     }
-	cout << "Ingrese el nuevo nombre: ";
-	cin >> p->Dato.nombre;
+    // else if(tabla == "Candidato"){
+    //     modificar_candidato(campo,p);
+    // }else if(tabla == "Partido"){
+    //     modificar_partido(campo,p);
+    // }
 	return true;
 }
 
 template<class T>
-void lista<T>::modificar_ciudad(string campo){
-    if campo==""
+void lista<T>::modificar_ciudad(string campo, T Dato){
+    if (campo=="nombre"){
+        cout<< "INGRESE EL NUEVO NOMBRE: \n";
+        cin>> Dato->Dato.nombre;
+    }else if(campo=="departamento"){
+        cout<< "INGRESE EL NUEVO DEPARTAMENTO: \n";
+        cin>> Dato->Dato.departamento;
+    }else if(campo=="concejo"){
+        cout<< "INGRESE EL NUEVO TAMANIO DEL CONCEJO: \n";
+        cin>> Dato->Dato.concejo;
+    }else if(campo=="censo"){
+        cout<< "INGRESE EL NUEVO CENSO ELECTORAL: \n";
+        cin>> Dato->Dato.censo;
+    }
+
 }
 
 #endif

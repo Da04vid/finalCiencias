@@ -236,14 +236,8 @@ void BD::insertarCandidato(){
                     cout<<"INGRESE UN PARTIDO VALIDO\n";
                 }
             }while(!comprobarPartido(Partido));
-            // if(!comprobarRepresentante(representante)){
-            //     cout << "¿EL PARTIDO ESTA ACTIVO?\n";
-            //     cout<<"1. SI\n2. NO\n";
-            //     cin>>estado;
-            //     if(estado==2)estado=0;
             archivo << nombre << "," << apellido <<"," << identificacion <<","<<sexo<<","<<estadoCivil<<","<<fechaNacimiento<<","<<ciudadNacimiento<<","<<CiudadRepresenta<<","<<Partido<< "\n";
             cout<<"CANDIDATO REGISTRADO EXITOSAMENTE\n";
-            // }
         }else{
             cout<<"CANDIDATO YA REGISTRADO\n";
         }
