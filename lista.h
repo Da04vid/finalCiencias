@@ -12,18 +12,17 @@ struct nodo {
 };
 template <class T>
 class lista{
-    nodo<T> *cab = new nodo<T>;
-    nodo<T> *fin = NULL;
+    nodo<T> *cab;
+    nodo<T> *fin;
     int tam;
 
 	public:
 		lista() {
-			T vacio = {"NULO", -1};
-			cab->Dato= vacio;
-			cab->sig=NULL;
+            cab = new nodo<T>;
+            fin = NULL;
 			tam=0;
 		}
-		void mostrar_lista();
+		void mostrar_lista(string tabla);
 		int getTam() {
 			return tam;
 		}
@@ -36,10 +35,34 @@ class lista{
         void modificar_ciudad(string campo, T Dato);
         void modificar_candidato(string campo, T Dato);
         void modificar_partido(string campo, T Dato);
+        void mostrar_ciudad(T Dato);
 };
 template <class T>
+void lista<T>::mostrar_lista(string tabla){
+	if(lista_vacia()) {
+		cout << "La lista esta vacia." << endl;
+		return;
+	}
+	nodo<T> *p = cab->sig;
+	while(p != NULL) {
+        T Dato = p->Dato;
+        if (tabla=="ciudad"){
+            mostrar_ciudad(Dato);
+        }
+		p = p->sig;
+	}
+}
+template <class T>
+void lista<T>::mostrar_ciudad(T Dato){
+    cout<<"ID DE LA CIUDAD: "<<Dato.id<<endl;
+    cout<<"NOMBRE DE LA CIUDAD: "<<Dato.nombre<<endl;
+    cout<<"DEPARTAMENTO DE LA CIUDAD: "<<Dato.departamento<<endl;
+    cout<<"TAMANIO DEL CONCEJO DE LA CIUDAD: "<<Dato.concejo<<endl;
+    cout<<"CENSO DE LA CIUDAD: "<<Dato.censo<<endl;
+}
+template <class T>
 bool lista<T>::lista_vacia(){
-	if(tam==0 || cab==NULL) {
+	if(tam==0) {
 		return true;
 	}
 	return false;
@@ -114,16 +137,16 @@ template<class T>
 void lista<T>::modificar_ciudad(string campo, T Dato){
     if (campo=="nombre"){
         cout<< "INGRESE EL NUEVO NOMBRE: \n";
-        cin>> Dato->Dato.nombre;
+        cin>> Dato.nombre;
     }else if(campo=="departamento"){
         cout<< "INGRESE EL NUEVO DEPARTAMENTO: \n";
-        cin>> Dato->Dato.departamento;
+        cin>> Dato.departamento;
     }else if(campo=="concejo"){
         cout<< "INGRESE EL NUEVO TAMANIO DEL CONCEJO: \n";
-        cin>> Dato->Dato.concejo;
+        cin>> Dato.concejo;
     }else if(campo=="censo"){
         cout<< "INGRESE EL NUEVO CENSO ELECTORAL: \n";
-        cin>> Dato->Dato.censo;
+        cin>> Dato.censo;
     }
 
 }

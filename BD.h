@@ -16,13 +16,14 @@ class BD{
         bool comprobarIdentificacion(int identificacion);
         string calculofechaNacimiento(int anio,int mes,int dia);
         string calculoEstadoCivil(int opc);
+        int calcular_id(string tabla);
 };
 
 void BD::insertarCiudad(){
     ofstream archivo;
     string nombre,departamento;
     char respuesta;
-    int concejo;
+    int concejo,id;
     std::string s;
     s.append("C://Users//David//Desktop//Ciencias I//final//BD//ciudad.txt");
     do {
@@ -32,17 +33,16 @@ void BD::insertarCiudad(){
             cout<<"ERROR AL CREAR EL ARCHIVO";
         }
         cout<<"POR FAVOR REGISTRE TODA LA INFORMACION EN MAYUSCULA\n";
-        cout << "INGRESE EL NOMBRE DE LA CIUDAD: ";
+        cout << "INGRESE EL NOMBRE DE LA CIUDAD: \n";
         cin.ignore();
         getline(cin, nombre);
         if(!comprobarCiudad(nombre)){
-            cout<<endl;
-            cout << "INGRESE EL DEPARTAMENTO AL QUE PERTENECE LA CIUDAD: ";
+            cout << "INGRESE EL DEPARTAMENTO AL QUE PERTENECE LA CIUDAD: \n";
             getline(cin, departamento);
-            cout<<endl;
-            cout << "INGRESE EL TAMANIO DEL CONCEJO DE LA CIUDAD: ";
+            cout << "INGRESE EL TAMANIO DEL CONCEJO DE LA CIUDAD: \n";
             cin >> concejo;
-            archivo << nombre << "," << departamento <<"," << concejo << endl;
+            id = calcular_id("ciudad");
+            archivo << id<<","<<nombre << "," << departamento <<"," << concejo << endl;
             cout<<"PARTIDO REGISTRADO EXITOSAMENTE\n";
         }else{
             cout<<"LA CIUDAD YA EXISTE\n";
@@ -60,12 +60,12 @@ bool BD::comprobarCiudad(string nombre){
     string linea;
     std::string s;
     s.append("C://Users//David//Desktop//Ciencias I//final//BD//ciudad.txt");
+    string nombreAux,idAux;
     archivo.open(s,ios::in);
     while(std::getline(archivo,linea)){
         std::istringstream iss(linea);
-        string nombreAux;
+        std::getline(iss,idAux,',');
         std::getline(iss,nombreAux,',');
-        cout<<nombreAux;
         if(nombre == nombreAux){
             archivo.close();
             cout<<"\nLA CIUDAD: "<<nombre<<"  YA EXISTE\n";
@@ -354,4 +354,19 @@ string BD::calculofechaNacimiento(int anio,int mes,int dia){
             break;
     }
     return fechaNacimiento;
+}
+
+int BD::calcular_id(string tabla){
+    ifstream archivo;
+    string linea,idAux;
+    std::string s = "C://Users//David//Desktop//Ciencias I//final//BD//"+tabla+".txt";
+    archivo.open(s,ios::in);
+    int id=0;
+    while(std::getline(archivo,linea)){
+        istringstream ss(linea);
+        getline(ss,idAux,',');
+        id = std::stoi(idAux);
+    }
+    id = id +1;
+    return id;
 }
