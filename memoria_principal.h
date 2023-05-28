@@ -6,7 +6,7 @@
 using namespace std;
 
 struct ciudad{
-    std::string nombre,departamento;
+    string nombre,departamento;
     int id,concejo,censo;
 };
 
@@ -24,7 +24,14 @@ class MP{
 void MP::cargar_datos(){
     cargar_ciudad();
 }
-
+std::ostream& operator<<(std::ostream& os, const ciudad& c) {
+    os << "ID DE LA CIUDAD: " << c.id << std::endl;
+    os << "NOMBRE DE LA CIUDAD: " << c.nombre << std::endl;
+    os << "DEPARTAMENTO DE LA CIUDAD: " << c.departamento << std::endl;
+    os << "TAMANIO DEL CONCEJO DE LA CIUDAD: " << c.concejo << std::endl;
+    os << "CENSO DE LA CIUDAD: " << c.censo << std::endl;
+    return os;
+}
 void MP::cargar_ciudad(){
     ifstream archivo;
     string linea;
@@ -37,9 +44,9 @@ void MP::cargar_ciudad(){
     std::mt19937 gen(rd());
     int min=100;
     int max=5000;
-    ciudad ciudadAux;
     std::uniform_int_distribution<> dis(min,max);
     while(std::getline(archivo,linea)){
+        ciudad* ciudadAux = new ciudad;
         std::istringstream iss(linea);
         std::getline(iss,idAux,',');
         id = std::stoi(idAux);
@@ -49,12 +56,12 @@ void MP::cargar_ciudad(){
         concejo = std::stoi(concejoAux);
         censo = dis(gen);
         cout<<id<<","<<nombre<<","<<departamento<<","<<concejo<<","<<censo<<endl;
-        ciudadAux.id = id;
-        ciudadAux.nombre=nombre;
-        ciudadAux.departamento=departamento;
-        ciudadAux.concejo=concejo;
-        ciudadAux.censo=censo;
-        lista_ciudad.insertar(ciudadAux);
+        ciudadAux->id = id;
+        ciudadAux->nombre=nombre;
+        ciudadAux->departamento=departamento;
+        ciudadAux->concejo=concejo;
+        ciudadAux->censo=censo;
+        lista_ciudad.insertar(*ciudadAux);
     }
     lista_ciudad.mostrar_lista("ciudad");
 }

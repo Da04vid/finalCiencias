@@ -35,7 +35,6 @@ class lista{
         void modificar_ciudad(string campo, T Dato);
         void modificar_candidato(string campo, T Dato);
         void modificar_partido(string campo, T Dato);
-        void mostrar_ciudad(T Dato);
 };
 template <class T>
 void lista<T>::mostrar_lista(string tabla){
@@ -45,21 +44,18 @@ void lista<T>::mostrar_lista(string tabla){
 	}
 	nodo<T> *p = cab->sig;
 	while(p != NULL) {
-        T Dato = p->Dato;
+
         if (tabla=="ciudad"){
-            mostrar_ciudad(Dato);
+            cout<<"ID DE LA CIUDAD: "<<p->Dato.id<<endl;
+            cout<<"NOMBRE DE LA CIUDAD: "<<p->Dato.nombre<<endl;
+            // cout<<"DEPARTAMENTO DE LA CIUDAD: "<<p->Dato.departamento<<endl;
+            // cout<<"TAMANIO DEL CONCEJO DE LA CIUDAD: "<<p->Dato.concejo<<endl;
+            // cout<<"CENSO DE LA CIUDAD: "<<p->Dato.censo<<endl;
         }
 		p = p->sig;
 	}
 }
-template <class T>
-void lista<T>::mostrar_ciudad(T Dato){
-    cout<<"ID DE LA CIUDAD: "<<Dato.id<<endl;
-    cout<<"NOMBRE DE LA CIUDAD: "<<Dato.nombre<<endl;
-    cout<<"DEPARTAMENTO DE LA CIUDAD: "<<Dato.departamento<<endl;
-    cout<<"TAMANIO DEL CONCEJO DE LA CIUDAD: "<<Dato.concejo<<endl;
-    cout<<"CENSO DE LA CIUDAD: "<<Dato.censo<<endl;
-}
+
 template <class T>
 bool lista<T>::lista_vacia(){
 	if(tam==0) {
