@@ -13,6 +13,7 @@ class BD{
         bool comprobarPartido(string nombre);
         bool comprobarRepresentante(string nombre);
         bool comprobarCandidato(string nombre, string apellido);
+        bool comprobarIdentificacion(int identificacion);
         string calculofechaNacimiento(int anio,int mes,int dia);
         string calculoEstadoCivil(int opc);
 };
@@ -102,6 +103,8 @@ void BD::insertarPartido(){
                 archivo << nombre << "," << representante <<"," << estado << "\n";
                 cout<<"PARTIDO REGISTRADO EXITOSAMENTE\n";
             }
+        }else{
+            cout<<"\nEL PARTIDO: "<<nombre<<"  YA EXISTE\n";
         }
         archivo.close();
         cout << "¿DESEA AGREGAR OTRO PARTIDO? (s/n): ";
@@ -123,7 +126,6 @@ bool BD::comprobarPartido(string nombre){
         std::getline(iss,nombreAux,',');
         if(nombre == nombreAux){
             archivo.close();
-            cout<<"\nEL PARTIDO: "<<nombre<<"  YA EXISTE\n";
             return true;
         } 
     }
@@ -169,7 +171,6 @@ void BD::insertarCandidato(){
         cin.ignore();
         getline(cin, nombre);
         cout << "INGRESE EL APELLIDO DEL CANDIDATO\n";
-        cin.ignore();
         getline(cin, apellido);
         if(!comprobarCandidato(nombre,apellido)){
             do{
@@ -195,9 +196,13 @@ void BD::insertarCandidato(){
                 }
             }while(dia<1 || dia>31);
             fechaNacimiento = calculofechaNacimiento(anio,mes,dia);
-            cout << fechaNacimiento;
-            cout<<"INGRESE EL NUMERO DE IDENTIFICACION DEL CANDIDATO\n";
-            cin>>identificacion;
+            do{
+                cout<<"INGRESE EL NUMERO DE IDENTIFICACION DEL CANDIDATO\n";
+                cin>>identificacion;
+                if(comprobarIdentificacion(identificacion)){
+                    cout<<"YA EXISTE UN CANDIDATO CON ESA IDENTIFICACION\n";
+                }
+            }while(comprobarIdentificacion(identificacion));
             do{
                 cout<<"INGRESE EL SEXO DEL CANDIDATO\n";
                 cout<<"F. FEMENINO\n";
@@ -206,11 +211,8 @@ void BD::insertarCandidato(){
                 if (sexo!='M' || sexo!='F'){
                     cout<<"POR FAVOR INGRESE UN SEXO VALIDO\n";
                 }
-            }while(sexo!='M' || sexo!='F');
-            cout<<"INGRESE EL SEXO DEL CANDIDATO\n";
-            cout<<"F. FEMENINO\n";
-            cout<<"M. Masculino\n";
-            cin>>sexo;
+            }while(sexo!='M' && sexo!='F');
+
             cout<<"INGRESE EL ESTADO CIVIL DEL CANDIDATO\n";
             do{
                 cout<<"1. CASADO\n2. SOLTERO\n3. UNION LIBRE\n4. DIVORCIADO\n";
@@ -222,18 +224,16 @@ void BD::insertarCandidato(){
             estadoCivil = calculoEstadoCivil(estado);
             cout<<"INGRESE LA CIUDAD DE NACIMIENTO DEL CANDIDATO\n";
             cin >> ciudadNacimiento;
-            do{
-                cout<<"INGRESE LA CIUDAD DE RESIDENCIA DEL CANDIDATO\n";
-                cin >> CiudadRepresenta;
-                if(!comprobarCiudad(CiudadRepresenta)){
-                    cout<<"INGRESE UNA CIUDAD VALIDA\n";
-                }
-            }while(!comprobarCiudad(CiudadRepresenta));
+            cout<<"INGRESE LA CIUDAD DE RESIDENCIA DEL CANDIDATO\n";
+            cin >> CiudadRepresenta;
+            if(!comprobarCiudad(CiudadRepresenta)){
+                cout<<"EL CANDIDATO NO PUEDE POSTULARSE POR QUE NO HABITA EN UNA CIUDAD REGISTRADA\n";
+            }
             do{
                 cout<<"INGRESE EL PARTIDO DEL CANDIDATO\n";
-                cin >> Partido;
+                getline(cin,Partido);
                 if(!comprobarPartido(Partido)){
-                    cout<<"INGRESE UNA CIUDAD VALIDA\n";
+                    cout<<"INGRESE UN PARTIDO VALIDO\n";
                 }
             }while(!comprobarPartido(Partido));
             // if(!comprobarRepresentante(representante)){
@@ -241,12 +241,14 @@ void BD::insertarCandidato(){
             //     cout<<"1. SI\n2. NO\n";
             //     cin>>estado;
             //     if(estado==2)estado=0;
-            //     archivo << nombre << "," << representante <<"," << estado << "\n";
-            //     cout<<"PARTIDO REGISTRADO EXITOSAMENTE\n";
+            archivo << nombre << "," << apellido <<"," << identificacion <<","<<sexo<<","<<estadoCivil<<","<<fechaNacimiento<<","<<ciudadNacimiento<<","<<CiudadRepresenta<<","<<Partido<< "\n";
+            cout<<"CANDIDATO REGISTRADO EXITOSAMENTE\n";
             // }
+        }else{
+            cout<<"CANDIDATO YA REGISTRADO\n";
         }
         archivo.close();
-        cout << "¿DESEA AGREGAR OTRO PARTIDO? (s/n): ";
+        cout << "¿DESEA AGREGAR OTRO CANDIDATO? (s/n): ";
         cin >> respuesta;
         
     } while (respuesta == 's' || respuesta == 'S');
@@ -286,11 +288,33 @@ bool BD::comprobarCandidato(string nombre,string apellido){
         istringstream ss(linea);
         getline(ss,nombreAux,',');
         getline(ss, apellidoAux, ',');
-        cout << nombreAux << "-------"<<apellidoAux<<endl;
+        if (nombre == nombreAux && apellido==apellidoAux) {
+            return true;
+        }
     }
     return false;
 }
 
+bool BD::comprobarIdentificacion(int identificacion){
+    ifstream archivo;
+    string linea;
+    std::string s;
+    s.append("C://Users//David//Desktop//Ciencias I//final//BD//candidato.txt");
+    archivo.open(s,ios::in);
+    std::string nombre,apellido,identificacionStr;
+    int identificacionAux;
+    while(std::getline(archivo,linea)){
+        istringstream ss(linea);
+        getline(ss,nombre,',');
+        getline(ss, apellido, ',');
+        getline(ss,identificacionStr,',');
+        identificacionAux = std::stoi(identificacionStr);
+        if (identificacion == identificacionAux) {
+            return true;
+        }
+    }
+    return false;
+}
 
 string BD::calculofechaNacimiento(int anio,int mes,int dia){
     string fechaNacimiento;

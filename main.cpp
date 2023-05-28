@@ -9,6 +9,7 @@ void registrar(BD bd);
 int main(){
     cout<<"BIENVENIDO"<<endl;
     int respuesta;
+    cargar_datos();
     do{
         cout<<"SELECCIONE UNA DE LAS SIGUIENTES OPCIONES\n";
         cout<<"1. REGISTRAR CIUDAD, CANDIDATO O PARTIDO\n";
